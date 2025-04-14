@@ -186,3 +186,18 @@ footer nav ul {
 	margin: 2em
 }
 
+
+.mybouton {
+	display: none;
+	align-items: center;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-family:  "Work Sans", "sans-serif";
+	font-size: 14px;
+	color: black;
+	gap: 5px;
+} 
+ .mybouton.show {
+	display: flex;
+ }
