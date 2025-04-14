@@ -4,173 +4,144 @@
 const getData = async (table) => {
     try {
         const response = await fetch(`http://localhost:5678/api/${table}`);
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
+        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+        return await response.json();
     } catch (error) {
         console.error(`Erreur lors de la récupération des données (${table}):`, error);
         return [];
     }
 };
 
-// Fonction pour afficher les projets dans le DOM
+// Affiche les projets
 const displayProjects = (projects) => {
     const gallery = document.getElementById("project-gallery");
-    if (!gallery) {
-        console.error("L'élément #project-gallery n'existe pas dans le HTML.");
-        return;
-    }
-
-    gallery.innerHTML = ""; // Vide la galerie avant d'ajouter les projets
-
+    if (!gallery) return console.error("#project-gallery introuvable");
+    gallery.innerHTML = "";
     projects.forEach(project => {
-        const projectCard = document.createElement("figure");
-        projectCard.innerHTML = `
+        const card = document.createElement("figure");
+        card.innerHTML = `
             <img src="${project.imageUrl}" alt="${project.title}" class="project-image">
             <figcaption>${project.title}</figcaption>
         `;
-        gallery.appendChild(projectCard);
+        gallery.appendChild(card);
     });
 };
 
-// Fonction pour créer les boutons de filtre
+// Crée les boutons filtres
 const createFilterButtons = (categories, allProjects) => {
-    const filterContainer = document.getElementById("filter-buttons");
-    if (!filterContainer) {
-        console.error("L'élément #filter-buttons n'existe pas dans le HTML.");
-        return;
-    }
+    const container = document.getElementById("filter-buttons");
+    if (!container) return;
+    container.style.display = "none";
+    container.style.justifyContent = "center";
+    container.style.gap = "10px";
+    container.style.marginBottom = "50px";
 
-    // Style pour le conteneur des filtres
-    filterContainer.style.margin = "0 0 50px 0";
-    filterContainer.style.display = "flex";
-    filterContainer.style.justifyContent = "center";
-    filterContainer.style.gap = "10px";
-
-    // Bouton "Tous"
-    const allButton = document.createElement("button");
-    allButton.textContent = "Tous";
-    allButton.addEventListener("click", () => {
-        displayProjects(allProjects);
-        setActiveFilter(allButton);
-    });
-    applyButtonStyle(allButton, true); // Actif par défaut
-    filterContainer.appendChild(allButton);
-
-    // Boutons pour chaque catégorie
-    categories.forEach(category => {
-        const button = document.createElement("button");
-        button.textContent = category.name;
-        button.addEventListener("click", () => {
-            const filteredProjects = allProjects.filter(project => project.categoryId === category.id);
-            displayProjects(filteredProjects);
-            setActiveFilter(button);
+    const createBtn = (name, filterFn, active = false) => {
+        const btn = document.createElement("button");
+        btn.textContent = name;
+        btn.classList.add("filter-btn");
+        btn.addEventListener("click", () => {
+            displayProjects(filterFn());
+            setActiveFilter(btn);
         });
-        applyButtonStyle(button, false);
-        filterContainer.appendChild(button);
+        applyButtonStyle(btn, active);
+        container.appendChild(btn);
+    };
+
+    createBtn("Tous", () => allProjects, true);
+    categories.forEach(cat => {
+        createBtn(cat.name, () => allProjects.filter(p => p.categoryId === cat.id));
     });
 };
 
-// Fonction pour appliquer le style aux boutons de filtre
-const applyButtonStyle = (button, isActive) => {
-    button.style.padding = "10px 20px";
-    button.style.border = "1px solid #1D6154";
-    button.style.borderRadius = "20px";
-    button.style.cursor = "pointer";
-    button.style.fontFamily = "'Work Sans', sans-serif";
-    button.style.fontSize = "16px";
-    button.style.transition = "background-color 0.3s, color 0.3s";
-
-    if (isActive) {
-        button.style.backgroundColor = "#1D6154";
-        button.style.color = "#FFFFFF";
-    } else {
-        button.style.backgroundColor = "#FFFFFF";
-        button.style.color = "#1D6154";
-    }
+// Style bouton actif
+const applyButtonStyle = (btn, active) => {
+    btn.style.padding = "10px 20px";
+    btn.style.border = "1px solid #1D6154";
+    btn.style.borderRadius = "20px";
+    btn.style.cursor = "pointer";
+    btn.style.fontFamily = "'Work Sans', sans-serif";
+    btn.style.fontSize = "16px";
+    btn.style.transition = "background-color 0.3s, color 0.3s";
+    btn.style.backgroundColor = active ? "#1D6154" : "#FFFFFF";
+    btn.style.color = active ? "#FFFFFF" : "#1D6154";
 };
 
-// Fonction pour marquer un filtre comme actif
-const setActiveFilter = (activeButton) => {
-    const buttons = document.querySelectorAll(".filters button");
-    buttons.forEach(btn => applyButtonStyle(btn, false));
-    applyButtonStyle(activeButton, true);
+const setActiveFilter = (activeBtn) => {
+    document.querySelectorAll(".filter-btn").forEach(btn => applyButtonStyle(btn, false));
+    applyButtonStyle(activeBtn, true);
 };
 
-// Fonction pour configurer le bouton "Modifier"
+// Configure le bouton "modifier"
 const setupEditButton = () => {
-    const editButtonContainer = document.getElementById("edit-button");
-    const editButton = document.getElementById("edit-projects");
-    if (!editButtonContainer || !editButton) {
-        console.error("Les éléments #edit-button ou #edit-projects n'existent pas dans le HTML.");
-        return;
-    }
-
-    // Vérifier si l'utilisateur est connecté
-    const token = localStorage.getItem("token");
-    console.log("Token trouvé dans localStorage :", token); // Log pour déboguer
-
-    // Temporairement commenter la condition pour tester l'affichage
-    // if (token) {
-        editButtonContainer.style.display = "inline-block";
-    // } else {
-    //     editButtonContainer.style.display = "none";
-    // }
-
-    // Style pour le conteneur "portfolio-header"
+    const btnContainer = document.getElementById("edit-button");
+    const editBtn = document.getElementById("edit-projects");
+    const filters = document.getElementById("filter-buttons");
     const portfolioHeader = document.querySelector(".portfolio-header");
-    if (portfolioHeader) {
-        portfolioHeader.style.display = "block"; // Revenir au comportement par défaut
-        portfolioHeader.style.textAlign = "center"; // S'assurer que le titre est centré
-        portfolioHeader.style.marginBottom = "30px";
+  
+    if (!btnContainer || !editBtn || !filters || !portfolioHeader) return;
+  
+    // Mise en forme de l'en-tête "Mes projets" + bouton
+    portfolioHeader.style.display = "flex";
+    portfolioHeader.style.justifyContent = "center";
+    portfolioHeader.style.alignItems = "center";
+    portfolioHeader.style.gap = "10px";
+    portfolioHeader.style.marginBottom = "50px";
+  
+    // Style du conteneur du bouton
+    btnContainer.style.display = "flex";
+  
+    // Style du bouton "modifier"
+    editBtn.style.display = "flex";
+    editBtn.style.alignItems = "center";
+    editBtn.style.background = "none";
+    editBtn.style.border = "none";
+    editBtn.style.cursor = "pointer";
+    editBtn.style.fontFamily = "'Work Sans', sans-serif";
+    editBtn.style.fontSize = "14px";
+    editBtn.style.color = "#000";
+    editBtn.style.gap = "5px";
+  
+    // Style de l'icône
+    const icon = editBtn.querySelector(".edit-icon");
+    if (icon) {
+      icon.style.width = "16px";
+      icon.style.height = "16px";
     }
-
-    // Style pour le bouton "Modifier"
-    editButton.style.display = "flex";
-    editButton.style.alignItems = "center";
-    editButton.style.background = "none";
-    editButton.style.border = "none";
-    editButton.style.cursor = "pointer";
-    editButton.style.fontFamily = "'Work Sans', sans-serif";
-    editButton.style.fontSize = "14px";
-    editButton.style.color = "#000";
-    editButton.style.gap = "5px";
-    editButton.style.marginTop = "10px"; // Espace sous "Mes Projets"
-
-    // Style pour l'icône
-    const editIcon = editButton.querySelector(".edit-icon");
-    if (editIcon) {
-        editIcon.style.width = "16px";
-        editIcon.style.height = "16px";
-    }
-
-    // Action au clic sur le bouton "Modifier"
-    editButton.addEventListener("click", () => {
-        console.log("Bouton Modifier cliqué !");
-        // À définir : que doit faire le bouton "Modifier" ?
+  
+    // Comportement : afficher/masquer les filtres, et cacher le bouton
+    editBtn.addEventListener("click", () => {
+      filters.style.display = filters.style.display === "flex" ? "none" : "flex";
+      btnContainer.style.display = "none";
     });
-};
+  };
 
-// Fonction principale pour initialiser la page
-const init = async () => {
-    try {
-        const projects = await getData("works");
-        const categories = await getData("categories");
+// Initialisation
+document.addEventListener("DOMContentLoaded", async () => {
+    const projects = await getData("works");
+    const categories = await getData("categories");
 
-        if (projects.length === 0 || categories.length === 0) {
-            console.warn("Aucune donnée récupérée. Vérifie que l'API est en marche.");
-            return;
-        }
+    if (!projects.length || !categories.length) return;
 
-        displayProjects(projects);
-        createFilterButtons(categories, projects);
-        setupEditButton();
-    } catch (error) {
-        console.error("Erreur lors de l'initialisation :", error);
+    displayProjects(projects);
+    createFilterButtons(categories, projects);
+    setupEditButton();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Nettoie les liens de la nav
+    const navLinks = document.querySelectorAll("nav a");
+    navLinks.forEach(link => {
+      link.style.textDecoration = "none";  // pas de souligné
+      link.style.color = "black";          // couleur texte neutre
+      link.style.fontWeight = "normal";    // normal pour tous
+    });
+  
+    // Met en gras uniquement "login" si on est sur login.html
+    const path = window.location.pathname;
+    const loginLink = document.getElementById("nav-login");
+  
+    if (path.endsWith("login.html") && loginLink) {
+      loginLink.style.fontWeight = "bold";
     }
-};
-
-// Appeler la fonction principale au chargement de la page
-document.addEventListener("DOMContentLoaded", init);
+  });

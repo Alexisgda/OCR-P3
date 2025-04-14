@@ -15,14 +15,12 @@
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li>
-				<a href="./login.html">login</a>
-			</li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+		  <li><a href="./index.html" id="nav-projects">projets</a></li>
+		  <li><a href="#contact" id="nav-contact">contact</a></li>
+		  <li><a href="./login.html" id="nav-login">login</a></li>
+		  <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
-	</nav>
+	  </nav>
 </header>
 <main>
 	<section id="introduction">
@@ -38,16 +36,17 @@
 	</section>
 	<section id="portfolio">
 		<div class="portfolio-header">
-			<h2>Mes Projets</h2>
+			<h2>Mes projets</h2>
 			<div id="edit-button" style="display: none;">
-				<button id="edit-projects">
-					<img src="http://localhost:5678/images/edit.png" alt="Icône Modifier" class="edit-icon">
-					modifier
-				</button>
+			  <button id="edit-projects">
+				<img src="./assets/icons/edit.png" alt="Icône Modifier" class="edit-icon" />
+				modifier
+			  </button>
 			</div>
-		</div>
-		<div class="filters" id="filter-buttons" style="display: none;"></div>
-		<div id="project-gallery" class="gallery">
+		  </div>
+		
+		  <div class="filters" id="filter-buttons"></div>
+		  <div id="project-gallery" class="gallery"></div>
 			<!-- <figure>
 				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
 				<figcaption>Abajour Tahina</figcaption>
