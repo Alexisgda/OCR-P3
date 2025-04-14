@@ -1,5 +1,6 @@
 // Frontend/index.js
-let isConnected = false
+let isConnected = false;
+
 // 🔄 Fonction qui va chercher les données depuis l'API (works ou categories)
 const getData = async (table) => {
     try {
@@ -34,52 +35,31 @@ const createFilterButtons = (categories, allProjects) => {
     const container = document.getElementById("filter-buttons");
     if (!container) return;
 
-    // 🎨 Mise en forme du conteneur
-    container.style.display = "none";
-    container.style.justifyContent = "center";
-    container.style.gap = "10px";
-    container.style.marginBottom = "50px";
+    container.classList.add("filter-buttons-container");
 
-    // 🆗 Crée le bouton "Tous" qui affiche tous les projets
     const createBtn = (name, filterFn, active = false) => {
         const btn = document.createElement("button");
         btn.textContent = name;
         btn.classList.add("filter-btn");
-        // btn.addEventListener("click", () => {
-        //     displayProjects(filterFn()); // 🔄 Filtrage des projets
-        //     setActiveFilter(btn); // ✅ Active visuellement le bouton
-        // });
-        displayProjects(filterFn()); // 🔄 Filtrage des projets
-        setActiveFilter(btn); // ✅ Active visuellement le bouton
-        applyButtonStyle(btn, active); // 🎨 Applique le style
+        if (active) btn.classList.add("active");
+        btn.addEventListener("click", () => {
+            displayProjects(filterFn());
+            setActiveFilter(btn);
+        });
         container.appendChild(btn);
     };
 
-    createBtn("Tous", () => allProjects, true); // Premier bouton actif
+    createBtn("Tous", () => allProjects, true);
 
-    // ➕ Un bouton par catégorie
     categories.forEach(cat => {
         createBtn(cat.name, () => allProjects.filter(p => p.categoryId === cat.id));
     });
 };
 
-// 🎨 Applique le style à un bouton (actif ou pas)
-const applyButtonStyle = (btn, active) => {
-    btn.style.padding = "10px 20px";
-    btn.style.border = "1px solid #1D6154";
-    btn.style.borderRadius = "20px";
-    btn.style.cursor = "pointer";
-    btn.style.fontFamily = "'Work Sans', sans-serif";
-    btn.style.fontSize = "16px";
-    btn.style.transition = "background-color 0.3s, color 0.3s";
-    btn.style.backgroundColor = active ? "#1D6154" : "#FFFFFF";
-    btn.style.color = active ? "#FFFFFF" : "#1D6154";
-};
-
 // ✅ Active uniquement le bouton cliqué
 const setActiveFilter = (activeBtn) => {
-    document.querySelectorAll(".filter-btn").forEach(btn => applyButtonStyle(btn, false));
-    applyButtonStyle(activeBtn, true);
+    document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+    activeBtn.classList.add("active");
 };
 
 // ✏️ Affiche le bouton "modifier" (si connecté), et gère son style + clic
@@ -89,33 +69,15 @@ const setupEditButton = () => {
     const filters = document.getElementById("filter-buttons");
     const portfolioHeader = document.querySelector(".portfolio-header");
 
-    // 🧱 On s'assure que tous les éléments sont présents
     if (!btnContainer || !editBtn || !filters || !portfolioHeader) return;
 
-    // 📐 Style général du bloc "Mes projets + bouton"
-    portfolioHeader.style.display = "flex";
-    portfolioHeader.style.justifyContent = "center";
-    portfolioHeader.style.alignItems = "center";
-    portfolioHeader.style.gap = "10px";
-    portfolioHeader.style.marginBottom = "50px";
-
-    // ✅ On affiche le bouton
+    portfolioHeader.classList.add("portfolio-header-layout");
     btnContainer.style.display = "flex";
 
-   if(isConnected){
-       editBtn.classList.add("show")
-   }
-
-
-
-    // 🖼️ Icône (si présente)
-    const icon = editBtn.querySelector(".edit-icon");
-    if (icon) {
-        icon.style.width = "16px";
-        icon.style.height = "16px";
+    if (isConnected) {
+        editBtn.classList.add("show");
     }
 
-    // 🧩 Clic sur "modifier" : affiche/masque les filtres + cache le bouton
     editBtn.addEventListener("click", () => {
         filters.style.display = filters.style.display === "flex" ? "none" : "flex";
         btnContainer.style.display = "none";
@@ -129,26 +91,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!projects.length || !categories.length) return;
 
-    displayProjects(projects);           // 🖼️ Affiche les projets
-    createFilterButtons(categories, projects); // 🧰 Crée les filtres
-    // setupEditButton();                   // ✏️ Affiche le bouton "modifier"
+    displayProjects(projects);
+    createFilterButtons(categories, projects);
+    // setupEditButton();
 });
 
 // 🎯 Met "login" en gras si on est sur login.html
 document.addEventListener("DOMContentLoaded", () => {
     const navLinks = document.querySelectorAll("nav a");
 
-    // Nettoyage du style de base des liens
     navLinks.forEach(link => {
-        link.style.textDecoration = "none";
-        link.style.color = "black";
-        link.style.fontWeight = "normal";
+        link.classList.remove("active-link");
     });
 
-    // Si on est sur login.html → mettre "login" en gras
     const path = window.location.pathname;
     const loginLink = document.getElementById("nav-login");
     if (path.endsWith("login.html") && loginLink) {
-        loginLink.style.fontWeight = "bold";
+        loginLink.classList.add("active-link");
     }
 });
