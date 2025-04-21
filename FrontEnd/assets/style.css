@@ -23,10 +23,16 @@
    footer, header, hgroup, menu, nav, section {
 	 display: block;
    }
+
+   .container {
+	max-width: 1140px;
+	margin: 0 auto;
+	padding: 0 20px; /* petit espace de sécurité sur mobile */
+  }
+  
+
    body {
 	line-height: 1;
-	max-width: 1140px;
-	margin: auto;
 	font-family: "Work Sans", sans-serif;
 	font-size: 14px;
 	display: flex;
@@ -92,9 +98,8 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 30px 5%;
 	box-sizing: border-box;
-	margin: 50px 0;
+	margin: 50px 8% 0;
   }
   
   nav ul {
@@ -134,6 +139,36 @@
 	position: relative;
 	top: 1px;
   }
+
+  /* === STYLE POUR index.html === */
+
+.portfolio-header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 50px;
+  }
+  
+  #edit-button {
+	display: none; /* par défaut caché */
+  }
+  
+  #edit-button.show {
+	display: flex;
+  }
+   
+  #filter-buttons {
+	display: none;
+	justify-content: center;
+	gap: 10px;
+	margin-bottom: 50px;
+  }
+  
+  #filter-buttons.show {
+	display: flex;
+  }
+  
   
   #introduction {
 	display: flex;
@@ -204,13 +239,6 @@
 	color: white;
   }
   
-  .portfolio-header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 10px;
-	margin-bottom: 50px;
-  }
   
   #edit-button {
 	display: flex;
@@ -218,7 +246,7 @@
   
   #edit-projects {
 	display: flex;
-	align-items: center;
+	margin-bottom: 25px;
 	background: none;
 	border: none;
 	cursor: pointer;
@@ -233,12 +261,48 @@
 	height: 16px;
   }
   
-  /* ==================================================
-	 LOGIN.HTML : PAGE CONNEXION
-	 ================================================== */
+/* ==================================================
+   LOGIN.HTML : PAGE CONNEXION
+   ================================================== */
+
+/* === STRUCTURE PRINCIPALE === */
+body.login-page {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+  }
   
+  main.login-main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  }
+  
+  #main-wrapper {
+	max-width: 1140px;
+	margin: 0 auto;
+  }
+  
+  /* === BANDEAU ADMIN === */
+  #admin-banner {
+	width: 100%;
+	background-color: black;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	font-family: "Work Sans", sans-serif;
+	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+  }
+  
+  /* === FORMULAIRE DE CONNEXION === */
   #contact {
-	width: 50%;
+	width: 35%;
 	margin: auto;
   }
   
@@ -282,6 +346,19 @@
 	width: 180px;
 	text-align: center;
 	border-radius: 60px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+  }
+  
+  input[type="submit"]:hover {
+	background-color: #144d41;
+	transform: scale(1.03);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  input[type="submit"]:active {
+	transform: scale(0.98);
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
   }
   
   #contact p a {
@@ -289,53 +366,28 @@
 	text-decoration: underline;
 	font-size: 0.9em;
   }
-body.login-page {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-  }
   
-  main.login-main {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-  }
-  
-  footer.login-footer {
-	padding: 2em 5%;
-	background-color: transparent;
-  }
-  
-  /* Footer */
+  /* === FOOTER === */
   footer {
 	width: 100%;
 	background-color: transparent;
   }
   
   footer nav {
-	max-width: 1140px;
-	margin: 0 auto;
-	padding: 2em 0;
+	width: 100%;
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
   }
   
   footer nav ul {
-	margin: 0;
-	padding: 0;
+	width: 100%;
+	padding: 2em 5%;
 	display: flex;
 	justify-content: flex-end;
   }
+    
   
-  footer nav ul li {
-	font-family: "Work Sans", sans-serif;
-	font-size: 0.9em;
-	color: #000;
-  }
-  
-  /* Bouton dynamique */
+  /* === BOUTON DYNAMIQUE (ex : "modifier") === */
   .mybouton {
 	display: none;
 	align-items: center;
@@ -351,22 +403,3 @@ body.login-page {
   .mybouton.show {
 	display: flex;
   }
-
-  #login-form input[type="submit"] {
-	cursor: pointer;
-	transition: all 0.3s ease;
-  }
-  
-  
-  #login-form input[type="submit"]:hover {
-	background-color: #144d41; /* plus foncé au survol */
-	transform: scale(1.03);    /* léger agrandissement */
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* petit relief */
-  }
-  
-  #login-form input[type="submit"]:active {
-	transform: scale(0.98); /* petit effet d’enfoncement au clic */
-	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  

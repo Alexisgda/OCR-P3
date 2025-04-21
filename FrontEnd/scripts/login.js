@@ -1,5 +1,6 @@
 // scripts/login.js
 
+
 console.log("Étape 1 : login.js chargé");
 
 // 🔐 Gère la connexion de l'utilisateur
@@ -51,7 +52,7 @@ const handleLogin = async (event) => {
 document.addEventListener("DOMContentLoaded", () => {
     const navLinks = document.querySelectorAll("nav a");
   
-    // Remet tous les liens à l'état normal
+    // Réinitialise le style des liens
     navLinks.forEach(link => {
       link.style.textDecoration = "none";
       link.style.color = "black";
@@ -60,8 +61,15 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Met "login" en gras si on est sur login.html
     const loginLink = document.getElementById("nav-login");
-    if (loginLink) {
+    if (loginLink && window.location.pathname.endsWith("login.html")) {
       loginLink.style.fontWeight = "bold";
     }
+  
+    // Gère la soumission du formulaire
+    const loginForm = document.getElementById("login-form");
+    if (loginForm) {
+      loginForm.addEventListener("submit", handleLogin);
+    }
   });
+  
   
