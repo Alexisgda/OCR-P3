@@ -69,7 +69,7 @@
 	 ================================================== */
   
   section {
-	margin: 50px 0;
+	margin: 10% 0 12%;
   }
   
   h1 {
@@ -115,6 +115,15 @@
 	font-size: 1.2em;
 	padding: 0 10px;
   }
+
+  li:hover {
+	color: #B1663C;
+}
+
+
+  .bold {
+	font-weight: bolder;
+  }
   
   nav a {
 	text-decoration: none;
@@ -140,12 +149,17 @@
 	top: 1px;
   }
 
+  .nav-logout{
+	display: none;
+	cursor: pointer;
+  }
+
   /* === STYLE POUR index.html === */
 
-.portfolio-header {
+  .portfolio-header {
 	display: flex;
 	justify-content: center;
-	align-items: center;
+		align-items: center;
 	gap: 10px;
 	margin-bottom: 50px;
   }
@@ -256,9 +270,13 @@
 	gap: 5px;
   }
   
-  .edit-icon {
-	width: 16px;
-	height: 16px;
+  #edit-projects i {
+	margin-left: 10px;
+	margin-right: 2.5px;
+	font-size: 16px;
+	font-weight: 400;
+	position: relative;
+	top: -1px;
   }
   
 /* ==================================================
@@ -403,3 +421,171 @@ body.login-page {
   .mybouton.show {
 	display: flex;
   }
+
+  #modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5); /* fond gris */
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 100;
+}
+  
+#modal {
+	position: relative;
+	background: white;
+	border-radius: 8px;
+	width: 600px;
+	padding: 40px;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+  
+.modal-close {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+  
+.modal-title {
+	text-align: center;
+	font-size: 24px;
+	margin-bottom: 30px;
+}
+  
+.modal-gallery {
+	display: grid;
+	position: relative;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 10px;
+	margin-bottom: 30px;
+}
+  
+.modal-gallery img {
+	width: 100%;
+}
+  
+.modal-gallery figure {
+	position: relative;
+}
+  
+.delete-icon {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	color: white;
+	background-color: black;
+	padding: 6px;
+	font-size: 14px;
+	cursor: pointer;
+}
+  
+.modal-add-btn {
+	display: block;
+	margin: 0 auto;
+	padding: 10px 20px;
+	background-color: #1d6154;
+	color: white;
+	border: none;
+	border-radius: 25px;
+	font-size: 16px;
+	cursor: pointer;
+}
+  
+#add-photo-form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 20px;
+}
+  
+#add-photo-form input[type="text"],
+#add-photo-form select {
+	padding: 8px;
+	font-size: 14px;
+}
+
+/* Flèche retour */
+.return-btn {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+	background: none;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+}
+  
+/* Bouton Valider stylé */
+#submit-button {
+	background-color: #1d6154;
+	color: white;
+	font-weight: bold;
+	border: none;
+	border-radius: 60px;
+	padding: 10px 0;
+	width: 180px;
+	margin: 30px auto 0;
+	text-align: center;
+	cursor: pointer;
+	transition: 0.3s ease;
+	display: block;
+}
+  
+#submit-button:disabled {
+	background-color: #a7a7a7;
+	cursor: not-allowed;
+}
+  
+.upload-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+  
+.image-preview {
+	width: 100%;
+	height: 180px;
+	background-color: #e8f1f6;
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	position: relative;
+	overflow: hidden;
+}
+  
+.image-preview i {
+	font-size: 60px;
+	color: #b9c5cc;
+}
+  
+.upload-label {
+	background-color: #cbdce4;
+	color: #1d6154;
+	padding: 8px 12px;
+	border-radius: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+  
+.upload-label:hover {
+	background-color: #aac8d8;
+}
+  
+.upload-info {
+	font-size: 12px;
+	color: #6c7a89;
+}
+
+

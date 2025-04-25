@@ -1,75 +1,60 @@
-// scripts/login.js
+// === 🔐 Connexion utilisateur (login.js) ===
 
+console.log("Étape 1 : login.js chargé"); // 🪵 Pour vérifier que le script est bien exécuté
 
-console.log("Étape 1 : login.js chargé");
-
-// 🔐 Gère la connexion de l'utilisateur
+// 🧠 Fonction principale pour gérer la soumission du formulaire
 const handleLogin = async (event) => {
-    console.log("Étape 3 : Formulaire soumis, handleLogin appelé");
-    event.preventDefault();
+  console.log("Étape 3 : Formulaire soumis, handleLogin appelé"); // 📩 Log au clic sur "Se connecter"
+  event.preventDefault(); // 🛑 Empêche le rechargement de la page
 
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
+  // 📨 Récupération des champs email et mot de passe
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
 
-    if (!emailInput || !passwordInput) {
-        console.error("Champs email ou mot de passe introuvables.");
-        alert("Erreur : Les champs email ou mot de passe sont manquants.");
-        return;
+  // ❌ Vérifie que les champs existent bien dans le DOM
+  if (!emailInput || !passwordInput) {
+    console.error("Champs email ou mot de passe introuvables.");
+    alert("Erreur : Les champs email ou mot de passe sont manquants.");
+    return;
+  }
+
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  // 🛑 Empêche l'envoi si un champ est vide
+  if (!email || !password) {
+    alert("Veuillez remplir tous les champs.");
+    return;
+  }
+
+  // 🔄 Envoi de la requête à l'API pour vérifier les identifiants
+  try {
+    const response = await fetch("http://localhost:5678/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // 📦 On envoie des données JSON
+      },
+      body: JSON.stringify({ email, password }), // 🔐 Données envoyées au backend
+    });
+
+    // ❌ Si la réponse est en erreur (ex : mauvais mot de passe)
+    if (!response.ok) throw new Error("Identifiants incorrects.");
+
+    const data = await response.json(); // 📥 Récupération de la réponse JSON
+
+    // ✅ Si on reçoit un token, on le stocke et on redirige
+    if (data.token) {
+      localStorage.setItem("token", data.token); // 🗝️ Stocke le token dans le navigateur
+      window.location.href = "./index.html"; // 🔁 Redirige vers la page d’accueil
+    } else {
+      throw new Error("Connexion échouée : token manquant.");
     }
 
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    if (!email || !password) {
-        alert("Veuillez remplir tous les champs.");
-        return;
-    }
-
-    try {
-        const response = await fetch("http://localhost:5678/api/users/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (!response.ok) throw new Error("Identifiants incorrects.");
-
-        const data = await response.json();
-
-        if (data.token) {
-            localStorage.setItem("token", data.token);
-            window.location.href = "./index.html";
-        } else {
-            throw new Error("Connexion échouée : token manquant.");
-        }
-    } catch (error) {
-        alert(error.message);
-    }
+  } catch (error) {
+    alert(error.message); // 🛑 Affiche un message d’erreur à l’utilisateur
+  }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    const navLinks = document.querySelectorAll("nav a");
-  
-    // Réinitialise le style des liens
-    navLinks.forEach(link => {
-      link.style.textDecoration = "none";
-      link.style.color = "black";
-      link.style.fontWeight = "normal";
-    });
-  
-    // Met "login" en gras si on est sur login.html
-    const loginLink = document.getElementById("nav-login");
-    if (loginLink && window.location.pathname.endsWith("login.html")) {
-      loginLink.style.fontWeight = "bold";
-    }
-  
-    // Gère la soumission du formulaire
-    const loginForm = document.getElementById("login-form");
-    if (loginForm) {
-      loginForm.addEventListener("submit", handleLogin);
-    }
-  });
-  
-  
+// 🖱️ Cible le formulaire et attache l'événement "submit"
+const loginForm = document.getElementById("login-form");
+loginForm.addEventListener("submit", handleLogin); // 🚀 Lance handleLogin quand on clique sur "Se connecter"
