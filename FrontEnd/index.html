@@ -109,54 +109,85 @@
     <script src="./scripts/modale.js"></script>
 
     <!-- 🔽 Modale d’administration -->
-<div id="modal-overlay">
-    <div id="modal">
-        <!-- ❌ Bouton de fermeture -->
+    <div id="modal-overlay">
+      <div id="modal">
+        <!-- ❌ Bouton pour fermer la modale -->
         <span class="modal-close">&times;</span>
 
-        <!-- 🖼️ Titre principal -->
+        <!-- 🖼️ Titre de la modale -->
         <h3 class="modal-title">Galerie photo</h3>
 
-        <!-- 🖼️ Galerie dynamique -->
+        <!-- 📷 Galerie des photos (images ajoutées dynamiquement) -->
         <div class="modal-gallery">
-			<!-- Injecté dynamiquement : figure avec img + icône 🗑️ -->
+          <!-- Les images avec leur bouton poubelle seront ajoutées ici en JS -->
         </div>
-		
 
-        <!-- ✅ COLLE LE FORMULAIRE ICI, juste avant le bouton -->
-        <form id="add-photo-form" style="display: none;" enctype="multipart/form-data">
-            <!-- 🔙 Bouton retour icône seule -->
-            <button type="button" id="return-to-gallery" class="return-btn">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
+        <!-- ✅ Formulaire pour ajouter une nouvelle photo (caché par défaut) -->
+        <form
+          id="add-photo-form"
+          style="display: none"
+          enctype="multipart/form-data"
+        >
+          <!-- 🔙 Bouton pour revenir à la galerie -->
+          <button type="button" id="return-to-gallery" class="return-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
 
-            <div class="upload-container">
-                <div id="image-preview" class="image-preview">
-                    <i class="fa-regular fa-image"></i>
-                    <label for="photo" class="upload-label">+ Ajouter photo</label>
-                    <input type="file" id="photo" name="image" accept="image/png, image/jpeg" hidden required>
-                    <span class="upload-info">jpg, png : 4mo max</span>
-                </div>
+          <!-- 📤 Zone de téléversement de l'image -->
+          <div class="upload-container">
+            <div id="image-ajout" class="image-preview">
+              <i class="fa-regular fa-image"></i>
+              <label for="photo" class="upload-label">+ Ajouter photo</label>
+              <input
+                type="file"
+                id="photo"
+                name="image"
+                accept="image/png, image/jpeg"
+                hidden
+                required
+              />
+              <span class="upload-info">jpg, png : 4mo max</span>
             </div>
 
-            <label for="title">Titre</label>
-            <input type="text" id="title" name="title" required>
+            <!-- 📸 Aperçu de l'image sélectionnée (caché par défaut) -->
+            <div
+              id="image-preview"
+              class="image-preview"
+              style="display: none"
+            ></div>
+          </div>
 
-            <label for="category">Catégorie</label>
-            <select id="category" name="category" required>
-                <!-- Options injectées dynamiquement -->
-            </select>
+          <!-- ⚠️ Message d’erreur si l’image est trop grosse -->
+          <div
+            style="color: rgba(125, 1, 1, 0.776); display: none"
+            id="image-error"
+          >
+            Image trop grosse
+          </div>
 
-            <input type="submit" value="Valider" id="submit-button" disabled>
+          <!-- 📝 Champ pour entrer le titre de la photo -->
+          <label for="title">Titre</label>
+          <input type="text" id="title" name="title" required />
+
+          <!-- 🗂️ Choix de la catégorie -->
+          <label for="category">Catégorie</label>
+          <select id="category" name="category" required>
+            <!-- Les options seront ajoutées en JS -->
+          </select>
+
+          <!-- 🧱 Ligne de séparation (au-dessus du bouton Valider) -->
+          <hr id="modal-separator-add" style="width: 100%" />
+
+          <!-- ✅ Bouton pour valider l’ajout (désactivé tant que les champs ne sont pas remplis) -->
+          <input type="submit" value="Valider" id="submit-button" disabled />
         </form>
-			<!-- Barre qui sépare la galerie de l'ajout -->
-			<hr id="modal-separator"/>
-		
-        <!-- ➕ Bouton pour passer au formulaire d’ajout -->
-        <button type="button" class="modal-add-btn">Ajouter une photo</button>
-		
-    </div>
-</div>
 
+        <!-- 🧱 Ligne de séparation entre galerie et formulaire -->
+        <hr id="modal-separator" />
+
+        <!-- ➕ Bouton pour afficher le formulaire d’ajout -->
+        <button type="button" class="modal-add-btn">Ajouter une photo</button>
+      </div>
+    </div>
   </body>
 </html>

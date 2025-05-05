@@ -11,7 +11,7 @@ const getData = async (table) => {
     return await response.json(); // ✅ Renvoie les données si tout est OK
   } catch (error) {
     console.error(`❌ Erreur lors de la récupération des données (${table}):`, error);
-    return [];
+    return []; // Retourne un tableau vide en cas d'erreur
   }
 };
 
@@ -81,15 +81,15 @@ const setupEditButton = () => {
 // 🔓 Déconnecte l'utilisateur et redirige vers la page login
 const logout = () => {
   localStorage.removeItem("token");
-  window.location.href = "./login.html";
+  window.location.reload(); // Recharger la page pour réinitialiser l'état
 };
 
 // 🚀 Code principal exécuté quand le DOM est prêt
 document.addEventListener("DOMContentLoaded", async () => {
-  const projects = await getData("works");
-  const categories = await getData("categories");
+  const projects = await getData("works"); // Charge les projets
+  const categories = await getData("categories"); // Charge les catégories
 
-  if (!projects.length || !categories.length) return;
+  if (!projects.length || !categories.length) return; // Si pas de projets ou catégories, on arrête l'exécution
 
   // 🧩 Gestion des éléments en fonction de l'état de connexion
   const adminBanner = document.getElementById("admin-banner");
@@ -98,17 +98,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnLogout = document.getElementById("nav-logout");
   const btnLogout2 = document.getElementById("logout");
 
-  btnLogout2.addEventListener("click", logout);
+  btnLogout2.addEventListener("click", logout); // Gère le clic sur le bouton logout
 
   if (isConnected) {
-    btnLogin.parentElement.style.display = "none";
-    btnLogout.parentElement.style.display = "block";
+    btnLogin.parentElement.style.display = "none"; // Cache le bouton login
+    btnLogout.parentElement.style.display = "block"; // Affiche le bouton logout
   }
 
   if (!isConnected && adminBanner) {
     btnContainer.style.display = "none"; // ❌ Masque le bouton "modifier"
     adminBanner.style.display = "none";  // ❌ Masque la bannière admin
-    createFilterButtons(categories, projects);
+    createFilterButtons(categories, projects); // Affiche les boutons de filtre
   } else {
     setupEditButton(); // ✅ Active le bouton "modifier"
   }
