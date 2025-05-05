@@ -251,15 +251,21 @@ document.addEventListener("DOMContentLoaded", () => {
           addPhotoForm.reset();
           imagePreview.style.display = 'none';
           imageAjout.style.display = 'flex';
-
+        
           checkFormValidity();
-
+        
           // Le projet est bien ajouté côté serveur
           let newProjet = await res.json();
           console.log('mon nouveau projet :', newProjet);
+        
+          // 🔄 Met à jour la galerie principale (arrière-plan)
+          const works = await getData("works");
+          displayProjects(works);
+        
         } else {
           alert("Erreur lors de l'ajout.");
         }
+        
       } catch (error) {
         console.error("💥 Erreur lors de l'envoi :", error);
       }
