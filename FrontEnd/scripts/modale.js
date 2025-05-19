@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const categorySelect = document.getElementById("category");
   const submitBtn = document.getElementById("submit-button");
   const imageError = document.getElementById("image-error");
-  const hr = document.getElementById('modal-separator');
+  const hr = document.getElementById("modal-separator");
 
   // Affiche le formulaire d’ajout de photo
   if (addPhotoBtn && addPhotoForm && modalGallery) {
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       modalGallery.style.display = "none";
       addPhotoForm.style.display = "flex";
       addPhotoBtn.style.display = "none";
-      hr.style.display = 'none';
+      hr.style.display = "none";
 
       // Modifie le titre de la modale
       const titleElement = document.querySelector(".modal-title");
@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       addPhotoForm.style.display = "none";
       modalGallery.style.display = "grid";
       addPhotoBtn.style.display = "block";
-      hr.style.display = 'block';
+      hr.style.display = "block";
       addPhotoForm.reset(); // Réinitialise le formulaire
 
       if (submitBtn) submitBtn.disabled = true;
@@ -175,25 +175,58 @@ document.addEventListener("DOMContentLoaded", () => {
     photoInput.addEventListener("change", () => {
       const file = photoInput.files[0];
       if (!file) return;
-
+      console.log("mon fichier:", file);
+     
       // Vérifie la taille du fichier
-      if (file.size > 4194304) {
-        imagePreview.style.display = 'none';
-        imageAjout.style.display = 'flex';
-        imageError.style.display = 'block';
+      const fileName = file.name.toLowerCase();
+      const fileExtension = fileName.split(".").pop();
+      const isExtensionAllowed =
+        fileExtension === "jpg" || fileExtension === "png";
+      const isTooLarge = file.size > 4 * 1024 * 1024;
+
+      // ❌❌ Cas 1 : mauvaise extension + trop lourd
+      if (!isExtensionAllowed && isTooLarge) {
+        imagePreview.style.display = "none";
+        imageAjout.style.display = "flex";
+        imageError.textContent =
+          "Format non respecte  + image trop grosse";
+        imageError.style.display = "block";
+        photoInput.value = "";
         return;
-      } else {
-        imageError.style.display = 'none';
       }
+
+      // ❌ Cas 2 : mauvaise extension
+      if (!isExtensionAllowed) {
+        imagePreview.style.display = "none";
+        imageAjout.style.display = "flex";
+        imageError.textContent =
+          "Format non respecte";
+        imageError.style.display = "block";
+        photoInput.value = "";
+        return;
+      }
+
+      // ❌ Cas 3 : image trop grosse
+      if (isTooLarge) {
+        imagePreview.style.display = "none";
+        imageAjout.style.display = "flex";
+        imageError.textContent = "L’image ne doit pas dépasser 4 Mo";
+        imageError.style.display = "block";
+        photoInput.value = "";
+        return;
+      }
+      // ✅ OK
+      imageError.style.display = "none";
 
       // Affiche l’aperçu avec FileReader
       const reader = new FileReader();
       reader.onload = (e) => {
-        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 30%">`;
+        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 30%">`;          
       };
+                
       reader.readAsDataURL(file);
-      imagePreview.style.display = 'flex';
-      imageAjout.style.display = 'none';
+      imagePreview.style.display = "flex";
+      imageAjout.style.display = "none";
     });
   }
 
@@ -249,23 +282,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (res.ok) {
           console.log("✅ Projet ajouté !");
           addPhotoForm.reset();
-          imagePreview.style.display = 'none';
-          imageAjout.style.display = 'flex';
-        
+          imagePreview.style.display = "none";
+          imageAjout.style.display = "flex";
+
           checkFormValidity();
-        
+
           // Le projet est bien ajouté côté serveur
           let newProjet = await res.json();
-          console.log('mon nouveau projet :', newProjet);
-        
+          console.log("mon nouveau projet :", newProjet);
+
           // 🔄 Met à jour la galerie principale (arrière-plan)
           const works = await getData("works");
           displayProjects(works);
-        
         } else {
           alert("Erreur lors de l'ajout.");
         }
-        
       } catch (error) {
         console.error("💥 Erreur lors de l'envoi :", error);
       }

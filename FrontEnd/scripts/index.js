@@ -81,8 +81,32 @@ const setupEditButton = () => {
 // 🔓 Déconnecte l'utilisateur et redirige vers la page login
 const logout = () => {
   localStorage.removeItem("token");
-  window.location.reload(); // Recharger la page pour réinitialiser l'état
+
+  // ✅ Réaffiche les filtres
+  const filters = document.getElementById("filter-buttons");
+  filters.innerHTML = ""; // On vide les anciens boutons
+  getData("categories").then(categories => {
+    getData("works").then(projects => {
+      displayProjects(projects);
+      createFilterButtons(categories, projects);
+    });
+  });
+
+  // ✅ Affiche le bouton "login" et cache "logout"
+  const btnLogin = document.getElementById("nav-login");
+  const btnLogout = document.getElementById("nav-logout");
+  btnLogin.parentElement.style.display = "block";
+  btnLogout.parentElement.style.display = "none";
+
+  // ✅ Cache le bouton "modifier"
+  const btnContainer = document.getElementById("edit-button");
+  if (btnContainer) btnContainer.style.display = "none";
+
+  // ✅ Cache la bannière admin
+  const adminBanner = document.getElementById("admin-banner");
+  if (adminBanner) adminBanner.classList.remove("show");
 };
+
 
 // 🚀 Code principal exécuté quand le DOM est prêt
 document.addEventListener("DOMContentLoaded", async () => {
@@ -106,10 +130,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (!isConnected && adminBanner) {
+    adminBanner.classList.remove("show")
     btnContainer.style.display = "none"; // ❌ Masque le bouton "modifier"
-    adminBanner.style.display = "none";  // ❌ Masque la bannière admin
     createFilterButtons(categories, projects); // Affiche les boutons de filtre
   } else {
+    adminBanner.classList.add("show")
     setupEditButton(); // ✅ Active le bouton "modifier"
   }
 

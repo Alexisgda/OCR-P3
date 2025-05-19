@@ -147,6 +147,13 @@
                 required
               />
               <span class="upload-info">jpg, png : 4mo max</span>
+              <!-- ⚠️ Message d’erreur si l’image est trop grosse -->
+              <div
+                style="color: rgba(125, 1, 1, 0.776); display: none"
+                id="image-error"
+              >
+                image ne dois pas depassere 4mo
+              </div>
             </div>
 
             <!-- 📸 Aperçu de l'image sélectionnée (caché par défaut) -->
@@ -157,13 +164,6 @@
             ></div>
           </div>
 
-          <!-- ⚠️ Message d’erreur si l’image est trop grosse -->
-          <div
-            style="color: rgba(125, 1, 1, 0.776); display: none"
-            id="image-error"
-          >
-            Image trop grosse
-          </div>
 
           <!-- 📝 Champ pour entrer le titre de la photo -->
           <label for="title">Titre</label>
