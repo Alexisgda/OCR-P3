@@ -17,11 +17,16 @@ const closeModal = () => {
     const addPhotoBtn = document.querySelector(".modal-add-btn"); // Bouton "Ajouter une photo"
     const modalGallery = document.querySelector(".modal-gallery"); // Galerie des projets
     const addPhotoForm = document.getElementById("add-photo-form"); // Formulaire d’ajout
+    const imagePreview = document.getElementById("image-preview");
+    const imageAjout = document.getElementById("image-ajout");
+
     addPhotoForm.reset(); // Réinitialise le formulaire
     addPhotoForm.style.display = "none"; // Cache le formulaire
+    imagePreview.style.display = "none"; // Cache l'image preview
+    imagePreview.innerHTML = ""
     modalGallery.style.display = "grid"; // Affiche la galerie
     addPhotoBtn.style.display = "block"; // Affiche le bouton "Ajouter une photo"
-
+    imageAjout.style.display = "flex"; // Affiche input ajout
     overlay.style.display = "none"; // Ferme la modale
   }
 };

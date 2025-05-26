@@ -49,9 +49,24 @@ const handleLogin = async (event) => {
     } else {
       throw new Error("Connexion échouée : token manquant.");
     }
-
   } catch (error) {
-    alert(error.message); // 🛑 Affiche un message d’erreur à l’utilisateur
+    const emailError = document.getElementById("email-error");
+    const passwordError = document.getElementById("password-error");
+
+    // Réinitialise
+    emailError.style.display = "none";
+    passwordError.style.display = "none";
+    emailError.textContent = "";
+    passwordError.textContent = "";
+
+    const message = "E-mail ou mot de passe incorrect.";
+
+    // Affiche le message sous les deux champs pour ne pas faire d’erreur
+    emailError.textContent = message;
+    emailError.style.display = "block";
+
+    passwordError.textContent = message;
+    passwordError.style.display = "block";
   }
 };
 

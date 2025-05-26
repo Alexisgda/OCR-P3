@@ -616,4 +616,9 @@ body.login-page {
   100% { transform: translateX(0); }
 }
 
+.form-error {
+  color: red;
+  font-size: 0.85rem;
+  margin: 5px 0 10px;
+}
 
