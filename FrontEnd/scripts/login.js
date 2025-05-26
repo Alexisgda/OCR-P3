@@ -50,20 +50,14 @@ const handleLogin = async (event) => {
       throw new Error("Connexion échouée : token manquant.");
     }
   } catch (error) {
-    const emailError = document.getElementById("email-error");
     const passwordError = document.getElementById("password-error");
 
     // Réinitialise
-    emailError.style.display = "none";
     passwordError.style.display = "none";
-    emailError.textContent = "";
     passwordError.textContent = "";
 
     // Affiche le message sous les deux champs pour ne pas faire d’erreur
-    emailError.textContent = "E-mail incorrect";
-    emailError.style.display = "block";
-
-    passwordError.textContent =  "mot de passe incorrect";
+    passwordError.textContent = "E-mail ou mot de passe incorrect.";
     passwordError.style.display = "block";
   }
 };
