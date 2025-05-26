@@ -59,13 +59,11 @@ const handleLogin = async (event) => {
     emailError.textContent = "";
     passwordError.textContent = "";
 
-    const message = "E-mail ou mot de passe incorrect.";
-
     // Affiche le message sous les deux champs pour ne pas faire d’erreur
-    emailError.textContent = message;
+    emailError.textContent = "E-mail incorrect";
     emailError.style.display = "block";
 
-    passwordError.textContent = message;
+    passwordError.textContent =  "mot de passe incorrect";
     passwordError.style.display = "block";
   }
 };
