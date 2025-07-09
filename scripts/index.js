@@ -29,13 +29,8 @@ const displayProjects = (projects) => {
   gallery.innerHTML = ""; // 🔁 On vide d'abord la galerie
 
   projects.forEach((project) => {
-    const card = document.createElement("figure");
-    card.innerHTML = `
-      <img src="${project.imageUrl}" alt="${project.title}" class="project-image">
-      <figcaption>${project.title}</figcaption>
-    `;
-    gallery.appendChild(card); // 🧱 On ajoute chaque projet dans la galerie
-  });
+   createWokIndex(project);
+  })
 };
 
 // 🧱 Fonction interne pour créer un bouton

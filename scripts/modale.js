@@ -64,12 +64,7 @@ const loadModalGallery = async () => {
 
     // Crée un élément figure pour chaque projet
     projects.forEach((project) => {
-      const figure = document.createElement("figure");
-      figure.innerHTML = `
-        <img src="${project.imageUrl}" alt="${project.title}">
-        <i class="fa-solid fa-trash-can delete-icon" data-id="${project.id}"></i>
-      `;
-      modalGallery.appendChild(figure);
+      createWokModal(project)
     });
 
     // Gère la suppression au clic sur l'icône corbeille
@@ -109,6 +104,13 @@ const loadModalGallery = async () => {
     console.error("❌ Erreur chargement images :", error);
   }
 };
+
+const displayOneProject = (project) => {
+  
+createWokIndex(project)
+createWokModal(project)  
+  
+}
 
 // === ➕ MODALE : AJOUT D’UNE PHOTO ===
 document.addEventListener("DOMContentLoaded", () => {
@@ -296,9 +298,8 @@ document.addEventListener("DOMContentLoaded", () => {
           let newProjet = await res.json();
           console.log("mon nouveau projet :", newProjet);
 
-          // 🔄 Met à jour la galerie principale (arrière-plan)
-          const works = await getData("works");
-          displayProjects(works);
+          // 🔄 Met à jour la galerie principale, avec new project(arrière-plan)
+          displayOneProject(newProjet)
         } else {
           alert("Erreur lors de l'ajout.");
         }
