@@ -59,11 +59,10 @@ const loadModalGallery = async () => {
   modalGallery.innerHTML = ""; // Vide la galerie avant affichage
 
   try {
-    const response = await fetch("http://localhost:5678/api/works");
-    const projects = await response.json();
+    
 
     // Crée un élément figure pour chaque projet
-    projects.forEach((project) => {
+    allWorks.forEach((project) => {
       createWokModal(project)
     });
 
@@ -80,7 +79,7 @@ const loadModalGallery = async () => {
         try {
           const response = await fetch(
             `http://localhost:5678/api/works/${projectId}`,
-            {
+            { 
               method: "DELETE",
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -90,8 +89,8 @@ const loadModalGallery = async () => {
           );
 
           if (response.ok) {
-            loadModalGallery(); // Recharge la galerie après suppression
-            displayProjects(await getData("works")); // Recharge la page principale
+            const elsToremove = document.querySelectorAll(`[data-id="${projectId}"]`);
+            elsToremove.forEach((el) => el.style.display = "none"); // Supprime les éléments correspondants
           } else {
             console.warn("❌ Échec suppression :", response.status);
           }
@@ -182,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
     photoInput.addEventListener("change", () => {
       const file = photoInput.files[0];
       if (!file) return;
-      console.log("mon fichier:", file);
      
       // Vérifie la taille du fichier
       const fileName = file.name.toLowerCase();
@@ -287,7 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (res.ok) {
-          console.log("✅ Projet ajouté !");
           addPhotoForm.reset();
           imagePreview.style.display = "none";
           imageAjout.style.display = "flex";
@@ -296,7 +293,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Le projet est bien ajouté côté serveur
           let newProjet = await res.json();
-          console.log("mon nouveau projet :", newProjet);
 
           // 🔄 Met à jour la galerie principale, avec new project(arrière-plan)
           displayOneProject(newProjet)

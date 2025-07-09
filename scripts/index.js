@@ -1,25 +1,8 @@
-let allCatagories = []; // 🗂️ Stocke toutes les catégories
-let allWorks = []; // 🖼️ Stocke tous les projets
-
 // === 🏁 Fichier Frontend/index.js ===
 
 // 🔐 Vérifie si l'utilisateur est connecté (token présent dans le localStorage)
 const isConnected = !!localStorage.getItem("token");
 
-// 🔄 Fonction générique pour récupérer les données de l'API (works ou categories)
-const getData = async (table) => {
-  try {
-    const response = await fetch(`http://localhost:5678/api/${table}`);
-    if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
-    return await response.json(); // ✅ Renvoie les données si tout est OK
-  } catch (error) {
-    console.error(
-      `❌ Erreur lors de la récupération des données (${table}):`,
-      error
-    );
-    return []; // Retourne un tableau vide en cas d'erreur
-  }
-};
 
 // 🖼️ Affiche les projets dynamiquement dans la galerie
 const displayProjects = (projects) => {
@@ -94,7 +77,6 @@ const logout = () => {
 
   // ✅ Réaffiche les filtres
   const filters = document.getElementById("filter-buttons");
-  console.log("🚀 ~ logout ~ filters:", filters);
   filters.innerHTML = ""; // On vide les anciens boutons
 
   allCatagories.forEach((cat) => {
@@ -125,21 +107,14 @@ const logout = () => {
 // 🚀 Code principal exécuté quand le DOM est prêt
 document.addEventListener("DOMContentLoaded", async () => {
   const projects = await getData("works"); // Charge les projets
-  allWorks = projects; // 🖼️ Stocke tous les projets
   const categories = await getData("categories"); // Charge les catégories
-  console.log("🚀 ~ categories via api:", categories);
   let categoerieTous = {
     id: 0,
     name: "Tous",
   };
-  console.log(
-    "🚀 ~ categoerieTous - celle que je veux insérer :",
-    categoerieTous
-  );
-  categories.unshift(categoerieTous); // Ajoute le bouton "Tous" en premier
-  console.log("🚀 ~ categories apreès insertion :", categories);
 
-  allCatagories = categories; // 🗂️ Stocke toutes les catégories
+  allCategories.unshift(categoerieTous); // Ajoute le bouton "Tous" en premier
+
 
   if (!projects.length || !categories.length) return; // Si pas de projets ou catégories, on arrête l'exécution
 
